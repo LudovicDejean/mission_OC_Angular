@@ -1,0 +1,35 @@
+<div class="container">
+  <button class="back" (click)="goBack()">&larr; Retour</button>
+
+  <h2>{{ country?.country }}</h2>
+
+  <div class="stats">
+    <div class="card">
+      <div class="label">Participations</div>
+      <div class="value">{{ participations }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Total médailles</div>
+      <div class="value">{{ totalMedals }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Total athlètes</div>
+      <div class="value">{{ totalAthletes }}</div>
+    </div>
+  </div>
+
+  <ngx-charts-line-chart
+    [results]="medalsSeries"
+    [view]="view"
+    [scheme]="'vivid'"
+    [legend]="showLegend"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [autoScale]="autoScale"
+    [animations]="animations">
+  </ngx-charts-line-chart>
+</div>

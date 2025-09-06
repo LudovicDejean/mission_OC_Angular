@@ -1,0 +1,14 @@
+<div class="container">
+  <h2>Olympic games app</h2>
+  <p class="subtitle">Medals per country</p>
+
+  <ngx-charts-pie-chart
+    [results]="(pieData$ | async) || []"
+    [view]="view"
+    [legend]="showLegend"
+    [labels]="showLabels"
+    [doughnut]="isDoughnut"
+    [gradient]="gradient"
+    (select)="onSelect($event)">
+  </ngx-charts-pie-chart>
+</div>
