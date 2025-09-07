@@ -1,20 +1,17 @@
+<button class="back" (click)="goBack()">&larr; Retour</button>
 <div class="container">
-  <button class="back" (click)="goBack()">&larr; Retour</button>
 
-  <h2>{{ country?.country }}</h2>
+  <h2 class="subtitle">{{ country?.country }}</h2>
 
-  <div class="stats">
-    <div class="card">
-      <div class="label">Participations</div>
-      <div class="value">{{ participations }}</div>
+  <div class="box-info">
+    <div class="label">Participations
+      <div class="imp">{{ participations }}</div>
     </div>
-    <div class="card">
-      <div class="label">Total médailles</div>
-      <div class="value">{{ totalMedals }}</div>
+    <div class="label">Total médailles
+      <div class="imp">{{ totalMedals }}</div>
     </div>
-    <div class="card">
-      <div class="label">Total athlètes</div>
-      <div class="value">{{ totalAthletes }}</div>
+    <div class="label">Total athlètes
+      <div class="imp">{{ totalAthletes }}</div>
     </div>
   </div>
 

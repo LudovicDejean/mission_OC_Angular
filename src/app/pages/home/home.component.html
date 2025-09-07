@@ -1,14 +1,25 @@
 <div class="container">
   <h2>Olympic games app</h2>
   <p class="subtitle">Medals per country</p>
+  <div class="box-info">
+    <div class="label">Number of JOs
+      <div class="imp">{{jos}}</div>
+    </div>
+    <div class="label">Number of countries
+      <div class="imp">{{countCountry}}</div>
+    </div>
+  </div>
 
-  <ngx-charts-pie-chart
-    [results]="(pieData$ | async) || []"
-    [view]="view"
-    [legend]="showLegend"
-    [labels]="showLabels"
-    [doughnut]="isDoughnut"
-    [gradient]="gradient"
-    (select)="onSelect($event)">
-  </ngx-charts-pie-chart>
+
+  <div class="chart-container">
+    <ngx-charts-pie-chart
+      [results]="(pieData$ | async) || []"
+      [view]="view"
+      [legend]="showLegend"
+      [labels]="showLabels"
+      [doughnut]="isDoughnut"
+      [gradient]="gradient"
+      (select)="onSelect($event)">
+    </ngx-charts-pie-chart>
+  </div>
 </div>

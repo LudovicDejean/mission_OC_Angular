@@ -1,2 +1,44 @@
-.container{padding:1rem;}
-.subtitle{color:#666;margin-bottom:.5rem;}
+.container{
+  padding:1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.subtitle{
+  color: #fff;
+  padding: 10px;
+  font-size: 30px;
+  border-radius: 10px;
+  background-color: #04838f;
+}
+
+.box-info{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.label{
+  padding: 10px;
+  font-size: 20px;
+  color: #828282;
+  border: #04838f solid 2px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.imp{
+  color: #000000;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.chart-container ngx-charts-pie-chart.ngx-charts .arc .active{
+  color: #04838f;
+}
+.chart-container ngx-charts-pie-chart.ngx-charts .acr:hover{
+  color: #04838f;
+}
