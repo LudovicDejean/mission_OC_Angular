@@ -28,3 +28,11 @@ You're now ready to implement the requested features.
 
 Good luck!
 "# mission_OC_Angular" 
+
+//////////////////////////////////////////////////////////////////////////////////
+
+## Compte rendu du projet :
+
+J'ai deux difficultés concernant ce projet :
+- la personnalisation du style sur la librairie ngx-charts
+- Trouver la font utilisé pour le texte selon le cahier des charges
