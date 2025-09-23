@@ -47,7 +47,11 @@ export class CountryDetailComponent implements OnInit, OnDestroy {
       .pipe(map(list => Array.isArray(list) ? list.find((c: Olympic) => c.id === id) : null))
       .subscribe((country) => {
         this.country = country;
-        if (!country) return;
+        if (!country) {
+          // Rediriger vers une page 404 si l'id n'est pas valide
+          this.router.navigate(['/notfound'])
+          return;
+        }
         this.participations = country.participations?.length || 0;
         this.totalMedals = country.participations?.reduce((s: number, p: Participation) => s + (p.medalsCount || 0), 0) || 0;
         this.totalAthletes = country.participations?.reduce((s: number, p: Participation) => s + (p.athleteCount || 0), 0) || 0;
