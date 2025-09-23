@@ -1,29 +1,26 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Olympic } from '../models/Olympic';
+import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class OlympicService {
-  private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<any>(undefined);
 
-  constructor(private http: HttpClient) {}
+  private readonly dataUrl = 'assets/mock/olympic.json';
 
-  loadInitialData() {
-    return this.http.get<any>(this.olympicUrl).pipe(
-      tap((value) => this.olympics$.next(value)),
-      catchError((error, caught) => {
-        console.error(error);
-        this.olympics$.next(null);
-        return caught;
+  constructor(private http: HttpClient, private router: Router) {}
+
+  getOlympics(): Observable<Olympic[]> {
+    return this.http.get<Olympic[]>(this.dataUrl).pipe(
+      catchError((error) => {
+        console.error('Erreur chargement olympics:', error);
+        this.router.navigate(['/notfound']);
+        return throwError(() => error);
       })
     );
-  }
-
-  getOlympics() {
-    return this.olympics$.asObservable();
   }
 }

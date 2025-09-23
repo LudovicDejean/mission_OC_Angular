@@ -27,19 +27,23 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadOlympics();
+  }
+
+  private loadOlympics(): void {
     this.olympics$ = this.olympicService.getOlympics();
     this.pieData$ = this.olympics$
-    .pipe(
-      map((countries: any[]) => Array.isArray(countries) ? countries.map(c => ({
-        name: c.country,
-        value: (c.participations || []).reduce((s: number, p: any) => s + (p.medalsCount || 0), 0),
-        extra: { id: c.id },
-      })) : [])
-    );
+      .pipe(
+        map((countries: any[]) => Array.isArray(countries) ? countries.map(c => ({
+          name: c.country,
+          value: (c.participations || []).reduce((s: number, p: any) => s + (p.medalsCount || 0), 0),
+          extra: { id: c.id },
+        })) : [])
+      );
     this.jos = 3;
     this.olympicsObject = this.olympicService.getOlympics()
       .pipe()
-      .subscribe((country) => {
+      .subscribe((country:any) => {
         this.countCountry = country?.length || 0;
       });
   }
