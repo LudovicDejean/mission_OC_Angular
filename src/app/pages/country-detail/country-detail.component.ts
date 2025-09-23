@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { OlympicService } from '../../core/services/olympic.service';
-import { Subscription, map } from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {OlympicService} from '../../core/services/olympic.service';
+import {Subscription, map} from 'rxjs';
+import {Olympic} from "../../core/models/Olympic";
+import {Participation} from "../../core/models/Participation";
 
 @Component({
   selector: 'app-country-detail',
@@ -32,20 +34,28 @@ export class CountryDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private olympicService: OlympicService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
+    this.loadOlympicsDetails();
+  }
+
+  private loadOlympicsDetails(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.sub = this.olympicService.getOlympics()
-      .pipe(map(list => Array.isArray(list) ? list.find((c: any) => c.id === id) : null))
+      .pipe(map(list => Array.isArray(list) ? list.find((c: Olympic) => c.id === id) : null))
       .subscribe((country) => {
         this.country = country;
         if (!country) return;
         this.participations = country.participations?.length || 0;
-        this.totalMedals = country.participations?.reduce((s: number, p: any) => s + (p.medalsCount || 0), 0) || 0;
-        this.totalAthletes = country.participations?.reduce((s: number, p: any) => s + (p.athleteCount || 0), 0) || 0;
-        const series = (country.participations || []).map((p: any) => ({ name: String(p.year), value: p.medalsCount }));
-        this.medalsSeries = [{ name: country.country, series }];
+        this.totalMedals = country.participations?.reduce((s: number, p: Participation) => s + (p.medalsCount || 0), 0) || 0;
+        this.totalAthletes = country.participations?.reduce((s: number, p: Participation) => s + (p.athleteCount || 0), 0) || 0;
+        const series = (country.participations || []).map((p: Participation) => ({
+          name: String(p.year),
+          value: p.medalsCount
+        }));
+        this.medalsSeries = [{name: country.country, series}];
       });
   }
 

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Observable, of, map, Subscription, count} from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Router } from '@angular/router';
+import {Olympic} from "../../core/models/Olympic";
+import {Participation} from "../../core/models/Participation";
 
 @Component({
   selector: 'app-home',
@@ -36,14 +38,14 @@ export class HomeComponent implements OnInit {
       .pipe(
         map((countries: any[]) => Array.isArray(countries) ? countries.map(c => ({
           name: c.country,
-          value: (c.participations || []).reduce((s: number, p: any) => s + (p.medalsCount || 0), 0),
+          value: (c.participations || []).reduce((s: number, p: Participation) => s + (p.medalsCount || 0), 0),
           extra: { id: c.id },
         })) : [])
       );
     this.jos = 3;
     this.olympicsObject = this.olympicService.getOlympics()
       .pipe()
-      .subscribe((country:any) => {
+      .subscribe((country:Olympic[]) => {
         this.countCountry = country?.length || 0;
       });
   }
