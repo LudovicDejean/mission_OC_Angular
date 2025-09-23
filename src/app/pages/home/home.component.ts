@@ -11,7 +11,6 @@ import {Participation} from "../../core/models/Participation";
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  public olympics$: Observable<any> = of(null);
   public pieData$: Observable<any[]> = of([]);
   private olympicsObject?: Subscription;
 
@@ -33,8 +32,7 @@ export class HomeComponent implements OnInit {
   }
 
   private loadOlympics(): void {
-    this.olympics$ = this.olympicService.getOlympics();
-    this.pieData$ = this.olympics$
+    this.pieData$ = this.olympicService.getOlympics()
       .pipe(
         map((countries: any[]) => Array.isArray(countries) ? countries.map(c => ({
           name: c.country,
@@ -52,7 +50,7 @@ export class HomeComponent implements OnInit {
 
   onSelect(event: any) {
     const countryName = event.name;
-    this.olympics$.subscribe((countries: any[]) => {
+    this.olympicService.getOlympics().subscribe((countries: any[]) => {
       const country = countries.find(c => c.country === countryName);
       if (country) {
         this.router.navigate(['/country', country.id]);
