@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   private loadOlympics(): void {
     this.pieData$ = this.olympicService.getOlympics()
       .pipe(
-        map((countries: any[]) => Array.isArray(countries) ? countries.map(c => ({
+        map((countries: Olympic[]) => Array.isArray(countries) ? countries.map(c => ({
           name: c.country,
           value: (c.participations || []).reduce((s: number, p: Participation) => s + (p.medalsCount || 0), 0),
           extra: { id: c.id },
@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
 
   onSelect(event: any) {
     const countryName = event.name;
-    this.olympicService.getOlympics().subscribe((countries: any[]) => {
+    this.olympicService.getOlympics().subscribe((countries: Olympic[]) => {
       const country = countries.find(c => c.country === countryName);
       if (country) {
         this.router.navigate(['/country', country.id]);
