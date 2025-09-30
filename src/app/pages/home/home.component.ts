@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, map, Subscription, count} from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import {Participation} from "../../core/models/Participation";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit ,OnDestroy{
   public pieData$: Observable<any[]> = of([]);
   private olympicsObject?: Subscription;
 
@@ -57,4 +57,9 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  ngOnDestroy(): void {
+    this.olympicsObject?.unsubscribe();
+  }
+
 }
