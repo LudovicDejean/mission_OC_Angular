@@ -67,7 +67,7 @@ export class CountryDetailComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  goBack() {
+  goBack(): void {
     this.router.navigateByUrl('/');
   }
 }

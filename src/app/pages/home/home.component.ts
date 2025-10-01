@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit ,OnDestroy{
       });
   }
 
-  onSelect(event: ChartSelectEvent) {
+  onSelect(event: ChartSelectEvent): void {
     const countryName = event.name;
     this.olympicService.getOlympics().subscribe((countries: Olympic[]) => {
       const country = countries.find(c => c.country === countryName);
