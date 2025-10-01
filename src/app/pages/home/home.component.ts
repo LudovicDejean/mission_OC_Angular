@@ -4,6 +4,7 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Router } from '@angular/router';
 import {Olympic} from "../../core/models/Olympic";
 import {Participation} from "../../core/models/Participation";
+import { ChartSelectEvent } from '../../core/models/ChartSelectEvent';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import {Participation} from "../../core/models/Participation";
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit ,OnDestroy{
-  public pieData$: Observable<any[]> = of([]);
+  public pieData$: Observable<ChartSelectEvent[]> = of([]);
   private olympicsObject?: Subscription;
 
   view: [number, number] = [700, 400];
@@ -48,7 +49,7 @@ export class HomeComponent implements OnInit ,OnDestroy{
       });
   }
 
-  onSelect(event: any) {
+  onSelect(event: ChartSelectEvent) {
     const countryName = event.name;
     this.olympicService.getOlympics().subscribe((countries: Olympic[]) => {
       const country = countries.find(c => c.country === countryName);
