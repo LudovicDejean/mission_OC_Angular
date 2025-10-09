@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import {Olympic} from "../../core/models/Olympic";
 import {Participation} from "../../core/models/Participation";
 import { ChartSelectEvent } from '../../core/models/ChartSelectEvent';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit ,OnDestroy{
+export class HomeComponent implements OnInit{
   public pieData$: Observable<ChartSelectEvent[]> = of([]);
   private olympicsObject?: Subscription;
 
@@ -34,7 +35,7 @@ export class HomeComponent implements OnInit ,OnDestroy{
 
   private loadOlympics(): void {
     this.pieData$ = this.olympicService.getOlympics()
-      .pipe(
+      .pipe(takeUntilDestroyed(),
         map((countries: Olympic[]) => Array.isArray(countries) ? countries.map(c => ({
           name: c.country,
           value: (c.participations || []).reduce((s: number, p: Participation) => s + (p.medalsCount || 0), 0),
@@ -43,7 +44,7 @@ export class HomeComponent implements OnInit ,OnDestroy{
       );
     this.jos = 3;
     this.olympicsObject = this.olympicService.getOlympics()
-      .pipe()
+      .pipe(takeUntilDestroyed())
       .subscribe((country:Olympic[]) => {
         this.countCountry = country?.length || 0;
       });
@@ -57,10 +58,6 @@ export class HomeComponent implements OnInit ,OnDestroy{
         this.router.navigate(['/country', country.id]);
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.olympicsObject?.unsubscribe();
   }
 
 }

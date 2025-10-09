@@ -4,13 +4,14 @@ import {OlympicService} from '../../core/services/olympic.service';
 import {Subscription, map} from 'rxjs';
 import {Olympic} from "../../core/models/Olympic";
 import {Participation} from "../../core/models/Participation";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-country-detail',
   templateUrl: './country-detail.component.html',
   styleUrls: ['./country-detail.component.scss'],
 })
-export class CountryDetailComponent implements OnInit, OnDestroy {
+export class CountryDetailComponent implements OnInit {
   country: any = null;
   medalsSeries: any[] = [];
   totalMedals = 0;
@@ -44,7 +45,7 @@ export class CountryDetailComponent implements OnInit, OnDestroy {
   private loadOlympicsDetails(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.sub = this.olympicService.getOlympics()
-      .pipe(map(list => Array.isArray(list) ? list.find((c: Olympic) => c.id === id) : null))
+      .pipe(takeUntilDestroyed(),map(list => Array.isArray(list) ? list.find((c: Olympic) => c.id === id) : null))
       .subscribe((country) => {
         this.country = country;
         if (!country) {
@@ -61,10 +62,6 @@ export class CountryDetailComponent implements OnInit, OnDestroy {
         }));
         this.medalsSeries = [{name: country.country, series}];
       });
-  }
-
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
   }
 
   goBack(): void {
