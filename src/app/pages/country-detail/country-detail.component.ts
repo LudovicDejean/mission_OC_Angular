@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OlympicService} from '../../core/services/olympic.service';
 import {Subscription, map} from 'rxjs';
 import {Olympic} from "../../core/models/Olympic";
 import {Participation} from "../../core/models/Participation";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import { Series, DataItem } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-country-detail',
@@ -12,13 +13,14 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
   styleUrls: ['./country-detail.component.scss'],
 })
 export class CountryDetailComponent implements OnInit {
-  country: any = null;
-  medalsSeries: any[] = [];
+  country: Olympic | null = null;
+  medalsSeries: Series[] = [];
   totalMedals = 0;
   totalAthletes = 0;
   participations = 0;
+  countryName = "";
 
-  view: [number, number] = [700, 400];
+  view: [number, number] = [400, 400];
   autoScale = true;
   animations = true;
   showXAxis = true;
@@ -30,6 +32,7 @@ export class CountryDetailComponent implements OnInit {
   yAxisLabel = 'Médailles';
 
   private sub?: Subscription;
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -45,14 +48,14 @@ export class CountryDetailComponent implements OnInit {
   private loadOlympicsDetails(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.sub = this.olympicService.getOlympics()
-      .pipe(takeUntilDestroyed(),map(list => Array.isArray(list) ? list.find((c: Olympic) => c.id === id) : null))
+      .pipe(takeUntilDestroyed(this.destroyRef),map(list => Array.isArray(list) ? list.find((c: Olympic) => c.id === id) : null))
       .subscribe((country) => {
-        this.country = country;
         if (!country) {
           // Rediriger vers une page 404 si l'id n'est pas valide
           this.router.navigate(['/notfound'])
           return;
         }
+        this.countryName = country.country
         this.participations = country.participations?.length || 0;
         this.totalMedals = country.participations?.reduce((s: number, p: Participation) => s + (p.medalsCount || 0), 0) || 0;
         this.totalAthletes = country.participations?.reduce((s: number, p: Participation) => s + (p.athleteCount || 0), 0) || 0;
